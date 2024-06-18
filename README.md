@@ -1,10 +1,10 @@
-Zig RTOS (in development)
+cheapRTOS (in development)
 ---
 
 ## Requirements
-Zig (Master)
-riscv64-unknown-elf compiler and linker
-QEMU RISC-V System
+ - Zig (Master)
+ - riscv64-unknown-elf compiler and linker
+ - QEMU RISC-V System
 
 ### (Optional)
 GDB Multiarch
