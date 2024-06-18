@@ -8,7 +8,7 @@
 _start:
     csrr    t0, mhartid
     bnez    t0, _wait
-    xor     fp, fp, fp
+    #xor     fp, fp, fp
     la      sp, _stack_start # Initialize stack pointer
     .option push
     .option norelax
