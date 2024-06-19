@@ -19,10 +19,6 @@ pub fn panic(msg: []const u8, _: ?*std.builtin.StackTrace, _: ?usize) noreturn {
     while (true) {}
 }
 
-pub noinline fn add(a: u8, b: u8) u8 {
-    return a + b;
-}
-
 pub const std_options = .{
     .logFn = log,
 };
