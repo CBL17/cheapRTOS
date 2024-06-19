@@ -15,11 +15,7 @@ pub fn init() void {
 }
 
 const Writer = std.io.GenericWriter(void, error{}, uart_write);
-const writer = Writer{ .context = {} };
-
-pub fn log(comptime fmt: []const u8, args: anytype) void {
-    std.fmt.format(writer, fmt ++ "\n", args) catch return;
-}
+pub const writer = Writer{ .context = {} };
 
 pub fn uart_write(_: void, bytes: []const u8) error{}!usize {
     const uart_base_reg: *volatile u8 = @ptrFromInt(UART_BASE);
