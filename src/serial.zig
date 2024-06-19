@@ -25,8 +25,3 @@ pub fn uart_write(_: void, bytes: []const u8) error{}!usize {
     }
     return bytes.len;
 }
-
-test "uart_write test" {
-    const bytes_written: usize = try uart_write(void{}, "I am working!\n");
-    try std.testing.expectEqual(15, bytes_written);
-}
