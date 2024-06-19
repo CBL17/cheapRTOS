@@ -1,5 +1,7 @@
 const std = @import("std");
 const serial = @import("serial.zig");
+const testing = std.testing;
+const regs = @import("kernel/reg.zig");
 
 pub fn panic(msg: []const u8, _: ?*std.builtin.StackTrace, _: ?usize) noreturn {
     kernelLog.err("PANIC!!!\n", .{});
@@ -32,20 +34,25 @@ pub fn log(
     args: anytype,
 ) void {
     const scope_prefix = "(" ++ switch (scope) {
-        .kernel => @tagName(scope),
+        .default, .kernel => @tagName(scope),
         else => if (@intFromEnum(level) <= @intFromEnum(std.log.Level.err)) @tagName(level) else return,
     } ++ "): ";
 
     const level_prefix = "[" ++ comptime level.asText() ++ "]";
 
-    std.fmt.format(serial.writer, "{s: <8}" ++ scope_prefix ++ format ++ "\n", .{level_prefix} ++ args) catch return;
+    std.fmt.format(serial.writer, "{s: <10}" ++ scope_prefix ++ format ++ "\n", .{level_prefix} ++ args) catch return;
 }
 
 const kernelLog = std.log.scoped(.kernel);
 
 pub export fn main() void {
     serial.init();
-    kernelLog.err("error, man", .{});
-    kernelLog.info("BRUHinfo", .{});
-    _ = add(255, 1);
+    asm volatile (
+        \\
+        :
+        : [number] "{t2}" (0x40),
+        : "t2"
+    );
+    const actual: usize = regs.getRegisterValue(.t2, usize);
+    kernelLog.info("expected: {}, actual: {}", .{ 0x40, actual });
 }
